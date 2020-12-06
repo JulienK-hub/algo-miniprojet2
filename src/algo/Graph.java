@@ -35,139 +35,135 @@ public class Graph {
 	
 	
 	
-	public void RougeBleu(int k) {
+	public String RougeBleu() {
+		String res= "";
 		getListREDVertex();
-		ArrayList<Vertex> sequenceRouge = new ArrayList<Vertex>();
-		ArrayList<Vertex> listVertexSeen = new ArrayList<Vertex>();
-		String res = findSequenceRouge(k,listVertexSeen);
-		System.out.println(res);
+		
+		Vertex vertexToSuppr = getNextRedVertexWithoutBlueExitingEdges();
+		while (vertexToSuppr != null) {
+			
+			res += suppr(vertexToSuppr);
+			vertexToSuppr = getNextRedVertexWithoutBlueExitingEdges();
+			System.out.println(this);
+		}
+		vertexToSuppr = getNextRedVertexWhichDoesntChangeRedNeighbourToBlue();
+		
+		while (vertexToSuppr != null) {
+			res += suppr(vertexToSuppr);
+			vertexToSuppr = getNextRedVertexWhichDoesntChangeRedNeighbourToBlue();
+			System.out.println(this);
+		}
+		
+		return res;
+		
 	}
 	
-	
-	
-	private String findSequenceRouge(int k,ArrayList<Vertex> listVertexSeen) {
-		String res = "";
-		System.out.println(listREDVertex);
-		System.out.println(this);
-		if(listREDVertex.size() == 0 || k == 0) {
-		}
-		else {
-			int i = 0;
-			int j = listREDVertex.size();
-			while (res.length() <= k*2 || i <= j ) {
-				
-				int nextRedVertexPos = findPos(listREDVertex.get(i));
-				res += this.getListVertex().get(nextRedVertexPos).getNum();
-				this.suppr(this.getListVertex().get(nextRedVertexPos));
-				i++;
-				return  res + ","+ findSequenceRouge(k-1,listVertexSeen );
-				
-				
+	private Vertex getNextRedVertexWhichDoesntChangeRedNeighbourToBlue() {
+		Vertex res = null;
+		
+		for (Vertex v: listREDVertex) {
+			res = v;
+			
+			if(v.getNeighbourL() != null) {
+				if (v.getNeighbourL().getColor() == Color.BLUE && v.getNeighbourL().getVertexExiting()==v && v.getNeighbourL().getVertexPointed().getColor() == Color.RED) {
+					res = null; // si on change le voisin de gauche de rouge à bleu
+				}
 			}
-				
+			if(v.getNeighbourR() != null) {
+				if (v.getNeighbourR().getColor() == Color.BLUE && v.getNeighbourR().getVertexExiting()==v && v.getNeighbourR().getVertexPointed().getColor() == Color.RED) {
+					res = null; // si on change le voisin de droite de rouge à bleu
+				}
+			}
+			if (res != null){
+				return res;
+			}
 		}
+		
 		return res;
 	}
 
-	private int getNextRedVertexPos() {
-		for (int i = 0; i < listVertex.size(); i++) {
-			if (listVertex.get(i).getColor() == Color.RED) {
-				return i;
+	private Vertex getNextRedVertexWithoutBlueExitingEdges() {
+		Vertex res = null;
+		
+		for (Vertex v: listREDVertex) {
+			res = v;
+			
+			if(v.getNeighbourL() != null) {
+				if (v.getNeighbourL().getColor() == Color.BLUE) {
+					if (v.getNeighbourL().getVertexPointed() != v) {
+						res = null;
+					}
+				}
+			}
+			if(v.getNeighbourR() != null) {
+				if (v.getNeighbourR().getColor() == Color.BLUE) {
+					if (v.getNeighbourR().getVertexPointed() != v) {
+						res = null;
+					}
+				}
+			}
+			if (res != null){
+				return res;
 			}
 		}
-		return -1;
+		
+		return res;
 	}
 
-	public void suppr(Vertex v) {
-		int posInList = findPos(v);
-		listREDVertex.remove(v);
-		if (v.getColor() != Color.RED) {
-			System.out.println("tu peux pas wesh il est pas rouge");
+	public String suppr(Vertex v) {
+		String res = "" ;
+		if(v == null) {
+			System.out.println("null pointeur exception lol");
 		}
-		else if (posInList == 0){
-			if(v.neighbourRSelfPointing()) {
-			}
-			else {
-				if(v.getNeighbourR().getColor() == Color.RED 
-						&& v.getNeighbourR().getVertexPointed().getColor() == Color.BLUE) {
-					listREDVertex.add(v.getNeighbourR().getVertexPointed());
-				}
-				else if(v.getNeighbourR().getColor() == Color.BLUE 
-						&& v.getNeighbourR().getVertexPointed().getColor() == Color.RED) {
-					listREDVertex.remove(v.getNeighbourR().getVertexPointed());
-				}
-				v.getNeighbourR().getVertexPointed().setColor(v.getNeighbourR().getColor());
-			}
-			listVertex.set(posInList, new Vertex());
-		}
-		
-		else if (listVertex.get(posInList-1).getNum() == 0){
-			if(v.neighbourRSelfPointing()) {
-			}
-			else {
-				if(v.getNeighbourR().getColor() == Color.RED 
-						&& v.getNeighbourR().getVertexPointed().getColor() == Color.BLUE) {
-					listREDVertex.add(v.getNeighbourR().getVertexPointed());
-				}
-				else if(v.getNeighbourR().getColor() == Color.BLUE 
-						&& v.getNeighbourR().getVertexPointed().getColor() == Color.RED) {
-					listREDVertex.remove(v.getNeighbourR().getVertexPointed());
-				}
-				v.getNeighbourR().getVertexPointed().setColor(v.getNeighbourR().getColor());
-			}
-			listVertex.set(posInList, new Vertex());
+		else if (v.getColor()==Color.BLUE) {
+			System.out.println("tu peux pas suppr un bleu wesh");
 		}
 		else {
-			
-			Vertex neighbourL = listVertex.get(posInList-1);
-			if(neighbourL.neighbourRSelfPointing()) {
-				if(neighbourL.getColor() == Color.RED 
-						&& neighbourL.getNeighbourR().getColor() == Color.BLUE) {
-					listREDVertex.remove(neighbourL);
+			res = v.getNum() + ",";
+			if(v.getNeighbourL()!=null) {
+				Vertex neigbourL = v.getVertexNeighbourL();
+				neigbourL.supprEdgeR(); // on supprime l'arête de droite du voisin de gauche
+				v.setNeighbourL(null);  // on supprime l'arête de gauche de v
+				if (!listREDVertex.contains(neigbourL) && neigbourL.getColor() == Color.RED ) { 
+					listREDVertex.add(neigbourL);
 				}
-				else if(listVertex.get(posInList -1).getColor() == Color.BLUE 
-						&& listVertex.get(posInList -1).getNeighbourR().getColor() == Color.RED) {
-					listREDVertex.add(v.getNeighbourR().getVertexPointed());
-				}
-				
-				listVertex.get(posInList -1).setColor(neighbourL.getNeighbourR().getColor());
-				neighbourL.setNeighbourR(null);
 				
 			}
 			else {
-				neighbourL.setNeighbourR(null);
-			
+				//cas où v n'a pas de voisin à gauche
 			}
-			if(v.neighbourRSelfPointing()) {
+			if(v.getNeighbourR()!=null) {
+				Vertex neigbourR = v.getVertexNeighbourR();
+				neigbourR.supprEdgeL(); // on supprime l'arête de gauche du voisin de droite
+				v.setNeighbourR(null);  // on supprime l'arête de droite de v
+				if (!listREDVertex.contains(neigbourR) && neigbourR.getColor() == Color.RED ) {
+					listREDVertex.add(neigbourR);
+				}
 			}
 			else {
-				if(v.getNeighbourR().getColor() == Color.RED 
-						&& v.getNeighbourR().getVertexPointed().getColor() == Color.BLUE) {
-					listREDVertex.add(v.getNeighbourR().getVertexPointed());
-				}
-				else if(v.getNeighbourR().getColor() == Color.BLUE 
-						&& v.getNeighbourR().getVertexPointed().getColor() == Color.RED) {
-					listREDVertex.remove(v.getNeighbourR().getVertexPointed());
-				}
-				v.getNeighbourR().getVertexPointed().setColor(v.getNeighbourR().getColor());
+				//cas où v n'a pas de voisin à droite
 			}
-			listVertex.set(posInList, new Vertex());
+			supprVertexInLists(v);
 		}
-		
-		
+		return res;
 	}
 	
-	public int findPos(Vertex v) {
+	private void supprVertexInLists(Vertex v) {
 		int i = 0;
-		for (Vertex vertex: listVertex) {
-			i++;
-			if (vertex.equals(v)) {
+		
+		for (Vertex v2 : listVertex) {
+			
+			if (v.getNum() == v2.getNum()) {
+				
+				listVertex.get(i).setNum(0);
 				break;
 			}
+			i++;
 		}
-		return i -1;
+		listREDVertex.remove(v);
+		
 	}
-	
+
 	@Override
 	public String toString() {
 		String res = "";

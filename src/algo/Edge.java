@@ -4,15 +4,20 @@ import java.awt.Color;
 
 public class Edge {
 	private Vertex vertexPointed;
+	private Vertex vertexExiting;
 	private Color color;
 	
-	public Edge(Vertex vertexPointed, Color color) {
+	public Edge(Vertex vertexExiting, Vertex vertexPointed, Color color) {
 		this.vertexPointed = vertexPointed;
 		this.color = color;
+		this.vertexExiting = vertexExiting;
 	}
 
 	public Vertex getVertexPointed() {
 		return vertexPointed;
+	}
+	public Vertex getVertexExiting() {
+		return vertexExiting;
 	}
 
 	public Color getColor() {
@@ -23,6 +28,10 @@ public class Edge {
 		this.vertexPointed = vertexPointed;
 	}
 
+	public void setVertexExiting(Vertex vertexExiting) {
+		this.vertexExiting = vertexExiting;
+	}
+	
 	public void setColor(Color color) {
 		this.color = color;
 	}
