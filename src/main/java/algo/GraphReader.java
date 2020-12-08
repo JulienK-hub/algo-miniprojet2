@@ -20,7 +20,7 @@ import java.util.*;
 public class GraphReader {
 
 	public static DiGraph D1Rem = diGraph("A.R E.B 0 B.R D.B 1 B.B F.B 1 C.R A.R 1");
-	public static DiGraph D1Rem2 = diGraph("A.R E.B 0 A.R D.B 0 A.R P.R 1");
+	public static DiGraph D1Rem2 = diGraph("A.R E.B 0 A.R J.B 1 J.B P.R 1 A.R P.R 1 A.R D.B 0");
 	public static DiGraph D2 = diGraph("A C A E B D D F D G E C F B");
 	public static DiGraph D3 = diGraph("A C B D C E C G D A D F E A F B");
 	/**

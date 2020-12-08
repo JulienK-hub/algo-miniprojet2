@@ -258,6 +258,20 @@ public abstract class AbstractGraph implements GraphITF {
 		public String toString() {
 			return tag;
 		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			InnerVertex that = (InnerVertex) o;
+			return Objects.equals(tag, that.tag) &&
+					Objects.equals(color, that.color);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(tag, color);
+		}
 	}
 
 	// a class for edges
