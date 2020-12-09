@@ -18,10 +18,12 @@ import java.util.*;
  * 
  */
 public class GraphReader {
-
+	//Colors : 0 = Rouge ; 1 = Bleu
+	//"Node1.ColorN1 Node2.ColorN2 ColorEdge" Pour deux noeud liés
+	//"Node1.Color1 $" (Pour un noeud seul)
 	public static DiGraph D1Rem = diGraph("A.R E.B 0 B.R D.B 1 B.B F.B 1 C.R A.R 1");
-	public static DiGraph D1Rem2 = diGraph("A.R E.B 0 A.R J.B 1 J.B P.R 1 A.R P.R 1 A.R D.B 0");
-	public static DiGraph D2 = diGraph("A C A E B D D F D G E C F B");
+	public static DiGraph D1Rem2 = diGraph("K.0 $ A.0 E.1 0 A.0 J.1 1 J.1 A.0 1 A.0 P.0 1 A.0 D.1 0 D.1 A.0 0 P.1 S.0 0 Q.1 H.0 0 ");
+	public static DiGraph D2 = diGraph("A.R B.R 0 B.R A.R 1");
 	public static DiGraph D3 = diGraph("A C B D C E C G D A D F E A F B");
 	/**
 	 * Returns an DiGraph build from the String
@@ -44,26 +46,32 @@ public class GraphReader {
 		Color colorVU = Color.BLACK, colorVV = Color.BLACK, colorE = Color.BLACK;
 		while ( input.hasNext() ) {
 			u = input.next();
-			if(u.startsWith("R", 2)){
+			if(u.startsWith("0", 2)){
 				colorVU = Color.RED;
-			}else if(u.startsWith("B", 2)){
+			}else if(u.startsWith("1", 2)){
 				colorVU = Color.BLUE;
 			}
+
+			VertexITF uu = addVertex(G,u.substring(0,1), colorVU);
 			if ( input.hasNext() ){
 				v = input.next();
-				if(v.startsWith("R", 2)){
+				if (v.startsWith("$")){
+					continue;
+				}else if(v.startsWith("0", 2)){
 					colorVV = Color.RED;
-				}else if(v.startsWith("B", 2)){
+				}else if(v.startsWith("1", 2)){
 					colorVV = Color.BLUE;
 				}
 			}
 			if(input.hasNextInt()){
 				colorE = (input.nextInt() == 0) ? Color.RED : Color.BLUE;
 			}
+			if(!v.isEmpty()){
+				VertexITF vv = addVertex(G,v.substring(0,1),colorVV);
+				G.addEdge(uu, vv, colorE);
+			}
+			v="";
 
-			VertexITF uu = addVertex(G,u.substring(0,1), colorVU);
-			VertexITF vv = addVertex(G,v.substring(0,1),colorVV);
-			G.addEdge(uu, vv, colorE);
 		}
 	}
 	

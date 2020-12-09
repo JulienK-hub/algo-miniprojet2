@@ -224,22 +224,28 @@ public abstract class AbstractGraph implements GraphITF {
 		AbstractGraph fromGraph; // back link to the host graph
 		String tag; // the tag of the vertex
 		Color color; // the weight of the vertex (mainly for the Dijkstra algorithm)
-
+		String id;
 		// Builds a vertex of tag 'tag' and linked to the
 		// graph 'fromGraph'
 		InnerVertex(AbstractGraph fromGraph, String tag, Color color) {
+			this.id = String.valueOf(new Random().nextInt(1000000));
 			this.tag = tag;
 			this.fromGraph = fromGraph;
 			this.color = color;
-		}		
+		}
 
 		/**
 		 * Returns the tag of the vertex
-		 */		
+		 */
 		public String getTag() {
 			return tag;
 		}
-		
+
+		@Override
+		public String getId() {
+			return id;
+		}
+
 		/**
 		 * Returns the weight of the vertex
 		 */	
@@ -249,7 +255,7 @@ public abstract class AbstractGraph implements GraphITF {
 
 		/**
 		 * Sets the weight of the vertex to 'weight'
-		 */			
+		 */
 		public void setColor(Color color) {
 			this.color = color;
 		}
@@ -264,13 +270,12 @@ public abstract class AbstractGraph implements GraphITF {
 			if (this == o) return true;
 			if (o == null || getClass() != o.getClass()) return false;
 			InnerVertex that = (InnerVertex) o;
-			return Objects.equals(tag, that.tag) &&
-					Objects.equals(color, that.color);
+			return id.equals(that.id);
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(tag, color);
+			return Objects.hash(id);
 		}
 	}
 
