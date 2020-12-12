@@ -1,10 +1,11 @@
-package algo;
+package main.java.algo;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Main {

@@ -1,4 +1,5 @@
-package algo;
+
+package main.java.algo;
 
 @SuppressWarnings("serial")
 public class BadVertexException extends RuntimeException {

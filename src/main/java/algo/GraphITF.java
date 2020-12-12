@@ -1,5 +1,4 @@
-package algo;
-
+package main.java.algo;
 import java.awt.*;
 
 /**

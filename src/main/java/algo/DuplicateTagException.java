@@ -1,4 +1,4 @@
-package algo;
+package main.java.algo;
 
 @SuppressWarnings("serial")
 public class DuplicateTagException extends RuntimeException {
