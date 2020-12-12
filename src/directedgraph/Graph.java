@@ -22,10 +22,7 @@ package directedgraph;
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -128,6 +125,14 @@ public class Graph<T> {
      */
     public Vertex<T> getVertex(int n) {
         return verticies.get(n);
+    }
+
+    public Vertex getVertex(String n){
+        for (Vertex v :
+             verticies) {
+            if(v.getName().equals(n)) return v;
+        }
+        return null;
     }
 
     /**
@@ -483,6 +488,8 @@ public class Graph<T> {
         return tmp.toString();
     }
 
+    //changement de display c'est mieux
+
     public String display(){
         StringBuilder stringBuilder = new StringBuilder("Graph [ ");
 
@@ -492,7 +499,156 @@ public class Graph<T> {
         stringBuilder.append("]");
 
         return stringBuilder.toString();
+    }
 
+    public Graph readGraph(String input) {
+        boolean rouge = false;
+        boolean  in = false;
+        boolean pass = false;
+        boolean bleu = false;
+        boolean out = false;
+
+        Vertex tmp = null;
+        Scanner scanner = new Scanner(input);
+        scanner.useDelimiter(" ");
+        String u, v = null;
+        int ulien, vlien = 0;
+        while ( scanner.hasNext() ) {
+
+
+            u = scanner.next();
+            System.out.println("U --> " + u);
+
+            if(tmp != null){
+                Vertex uuu = new Vertex(u);
+                
+            }
+
+            if(scanner.hasNext()){
+                ulien = scanner.nextInt();
+                System.out.println("ulien --> " + ulien);
+                if(ulien == 11){
+                    //rouge in
+                    rouge = true;
+                    in = true;
+                }else if(ulien == 19){
+                    //rouge out
+                    rouge = true;
+                }else if(ulien == 91){
+                    //bleu in
+                    in = true;
+                }else if(ulien == 99){
+                    //bleu out
+                }else{
+                    //error
+                    System.out.println("error lien mauvais");
+                }
+            }else{
+                return this;
+            }
+
+            if ( scanner.hasNext() ){
+                v = scanner.next();
+                System.out.println("V --> " + v);
+            }
+            else
+               return this;
+
+            if( scanner.hasNext()){
+                vlien = scanner.nextInt();
+                pass = true;
+                System.out.println("vlien --> " + vlien);
+                if(vlien == 11){
+                    //rouge in
+                }else if(vlien == 19){
+                    //rouge out
+                    out = true;
+                }else if(vlien == 91){
+                    //bleu in
+                    in = true;
+                    bleu = true;
+                }else if(vlien == 99){
+                    //bleu out
+                    bleu = true;
+                    out = true;
+                }else{
+                    //error
+                    System.out.println("error lien mauvais");
+                }
+            }else{
+                return this;
+            }
+
+
+            Vertex uu = new Vertex(u);
+
+            Vertex vv = new Vertex(v);
+
+            if(pass) tmp = vv;
+            if(rouge && in){
+                uu.addIncomingEdge(vv,0,Color.RED);
+            }else if (rouge && !in){
+                uu.addOutgoingEdge(vv,0,Color.RED);
+            }else if(!rouge && in){
+                uu.addIncomingEdge(vv,0,Color.BLUE);
+            }else if(!rouge && !in){
+                uu.addOutgoingEdge(vv,0,Color.BLUE);
+            }
+            this.addVertex(uu);
+            this.addVertex(vv);
+            pass = false;
+
+           // this.addEdge(uu, vv, 0);
+        }
+        return this;
+    }
+
+    public Graph graphReader(String str){
+        /**
+         * Règles
+         * Ecrire R1 R2 .. Rn --> vertex rouge
+         * Ecrire B1 B2 .. Bn --> vertex bleu
+         * Arrêtes : écrire 0 ou 1 entre les sommets
+         * Exemple : R1 0 B1 --> R1 vers B1 avec l'arrête en rouge
+         * Double orientation R1 0 B1 B1 1 R1
+         * Mettre un * pour séparer (sous-graphes)
+         */
+        Graph graph = new Graph();
+        List<Vertex> vertexList = new ArrayList<>();
+        String[] input = str.split(" ");
+        for(int i = 0; i < input.length; i++) {
+//            Vertex pred = new Vertex(input[i - 2]);
+//            Vertex cur = new Vertex(input[i]);
+            if(i % 2 == 0){
+                //graph.addVertex(new Vertex(input[i]));
+                //System.out.println("tests");
+            }
+            else{
+                if(input[i].equals("*")){
+                    //todo
+                }
+                Vertex from = null;
+                if( i - 2 >= 0){
+                    from = graph.getVertex(input[i - 2]);
+                }
+
+                Vertex to = null;
+                if( (i + 2) < input.length) {
+                    to = graph.getVertex(input[i + 2]);
+                }
+                if(input[i].equals("0") && from != null && to != null){
+                    // 0 correspond à rouge
+                    from.addOutgoingEdge(to, 0 , Color.RED);
+                    graph.addVertex(from);
+                    System.out.println("tt");
+                }else if(input[i].equals("1") && from != null && to != null){
+                    // 1 correspond à blue
+                    from.addOutgoingEdge(to, 0 , Color.RED);
+                    graph.addVertex(from);
+                }
+            }
+        }
+        return graph;
     }
 
 }

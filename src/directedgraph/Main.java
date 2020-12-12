@@ -35,11 +35,26 @@ public class Main {
         vertexList.add(v7);
         vertexList.add(v8);
 
-        vertexList.forEach(graph::addVertex);
+        //vertexList.forEach(graph::addVertex);
 
         //vertexList.forEach(v-> System.out.println(v));
 
         System.out.println(graph.display());
+
+        System.out.println("Test reader");
+
+        //System.out.println(graph.graphReader("R1 0 R2 1 B2"));
+
+        /**
+         * 11 : rouge in
+         * 19 : rouge out
+         * 91 : bleu in
+         * 99 : bleu out
+         */
+        String input = "R1 99 R2 99 R3 99 R4 99 R5";
+        graph.readGraph(input);
+
+        System.out.println(graph);
 
     }
 }
