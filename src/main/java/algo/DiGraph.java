@@ -20,7 +20,7 @@ public class DiGraph extends AbstractGraph {
 	}
 	
 	@Override
-	public VertexITF addVertex(int tag,Color color) {
+	public VertexITF addVertex(String tag,Color color) {
 		VertexITF v = super.addVertex(tag,color);
 		inDegree.put(v,0);
 		return v;

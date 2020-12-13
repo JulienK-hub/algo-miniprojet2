@@ -29,14 +29,14 @@ public interface GraphITF {
 	 * If 'tag' is already used in that graph, the
 	 * method raises a DuplicateTagException exception
 	 */
-	public VertexITF addVertex(int tag, Color color);
+	public VertexITF addVertex(String tag, Color color);
 	
 	/**
 	 * Return the vertex of tag 'tag' from the graph
 	 * If no vertex has tag 'tag', the method
 	 * returns null
 	 */
-	public VertexITF getVertex(int tag);
+	public VertexITF getVertex(String tag);
 	
 	/**
 	 * Returns a random vertex from the graph

@@ -16,8 +16,7 @@ public abstract class AbstractGraph implements GraphITF {
 	// the number of edges
 	protected int nbEdges;
 	// the set of all tags
-	private Map<Integer,VertexITF> ids;
-
+	private Map<String,VertexITF> tags;
 	// the set of edges
 	protected Map<VertexITF,Map<VertexITF,EdgeITF>> edges;
 
@@ -26,7 +25,7 @@ public abstract class AbstractGraph implements GraphITF {
 	 */
 	public AbstractGraph() {
 		adjacencyList = new HashMap<VertexITF,List<VertexITF>>();
-		ids = new HashMap<Integer,VertexITF>();
+		tags = new HashMap<String,VertexITF>();
 		edges = new HashMap<VertexITF,Map<VertexITF,EdgeITF>>();
 		nbEdges = 0;
 	}
@@ -53,11 +52,11 @@ public abstract class AbstractGraph implements GraphITF {
 	 * If 'tag' is already used in that graph, the
 	 * method raises a DuplicateTagException exception
 	 */
-	public VertexITF addVertex(int id,Color color) {
-		if ( ids.containsKey(id) )
-			throw new DuplicateTagException(String.valueOf(id));
-		InnerVertex v = new InnerVertex(this,id,color);
-		ids.put(id, v);
+	public VertexITF addVertex(String tag,Color color) {
+		if ( tags.containsKey(tag) )
+			throw new DuplicateTagException(tag);
+		InnerVertex v = new InnerVertex(this,tag,color);
+		tags.put(tag, v);
 		adjacencyList.put(v,new LinkedList<VertexITF>());
 		return v;
 	}
@@ -67,10 +66,10 @@ public abstract class AbstractGraph implements GraphITF {
 	 * If no vertex has tag 'tag', the method
 	 * returns null
 	 */
-	public VertexITF getVertex(int tag) {
-		if ( ! ids.containsKey(tag) )
+	public VertexITF getVertex(String tag) {
+		if ( ! tags.containsKey(tag) )
 			return null;
-		return ids.get(tag);
+		return tags.get(tag);
 	}
 	
 	
@@ -225,11 +224,11 @@ public abstract class AbstractGraph implements GraphITF {
 		AbstractGraph fromGraph; // back link to the host graph
 		String tag; // the tag of the vertex
 		Color color; // the weight of the vertex (mainly for the Dijkstra algorithm)
-		int id;
+		String id;
 		// Builds a vertex of tag 'tag' and linked to the
 		// graph 'fromGraph'
-		InnerVertex(AbstractGraph fromGraph, int id, Color color) {
-			this.id = id;
+		InnerVertex(AbstractGraph fromGraph, String tag, Color color) {
+			this.id = String.valueOf(new Random().nextInt(1000000));
 			this.tag = tag;
 			this.fromGraph = fromGraph;
 			this.color = color;
@@ -243,7 +242,7 @@ public abstract class AbstractGraph implements GraphITF {
 		}
 
 		@Override
-		public int getId() {
+		public String getId() {
 			return id;
 		}
 
@@ -271,7 +270,7 @@ public abstract class AbstractGraph implements GraphITF {
 			if (this == o) return true;
 			if (o == null || getClass() != o.getClass()) return false;
 			InnerVertex that = (InnerVertex) o;
-			return id == that.id;
+			return id.equals(that.id);
 		}
 
 		@Override
