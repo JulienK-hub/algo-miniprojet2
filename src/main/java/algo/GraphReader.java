@@ -25,6 +25,10 @@ public class GraphReader {
     public static DiGraph D2 = diGraph("A.R B.R 0 B.R A.R 1");
     public static DiGraph D3 = diGraph("A C B D C E C G D A D F E A F B");
 
+    //
+    static int TOUR = 0;
+    static int TOURNOEDGES = 0;
+
     /**
      * Returns an DiGraph build from the String
      * representation 'input'
@@ -82,6 +86,44 @@ public class GraphReader {
         return v;
     }
 
+    /**
+     *
+     * @param nbvertex : nombre de sommets qu'on souhaite
+     * @param probaBlueVertex : probabilité d'avoir des vertex bleu dans le graphe
+     * @param probaRedVertex : probabilité d'avoir des vertex rouge dans le graphe
+     * @param probaBlueEdges : probabilité d'avoir des edges bleu dans le graphe
+     * @param probaRedEdges : probabilité d'avoir des edges rouge dans le graphe
+     * @param probaNoEdge : probilité d'avoir des vertex sans edges
+     * @return string qui va être lu par le graph reader
+     */
+    public String autoGraph(int nbvertex, double probaBlueVertex, double probaRedVertex, double probaBlueEdges, double probaRedEdges, double probaNoEdge) {
+        StringBuilder sB = new StringBuilder();
+        int i = 1;
+        for (; i <= nbvertex; i++) {
+            //case : 2 sommets crées
+            System.out.println("i -->" + i);
+            if(TOUR == 2){
+                //edge rouge ou bleu
+                sB.append(getRedOrBlueWithProba(probaBlueEdges, probaRedEdges));
+                sB.append(" ");
+                TOUR = 0;
+            }
+            sB.append(getRandomletter());
+            sB.append(".");
+            sB.append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex));
+            sB.append(" ");
+            TOUR++;
+
+            if(TOUR == 1 && randomNoEdges(probaNoEdge)){
+                //case : 1 sommet crée et proba tombe sans edge
+                sB.append("$");
+                sB.append(" ");
+                TOUR = 0;
+            }
+        }
+        return sB.toString();
+    }
+
     static int getRedOrBlueWithProba(double probaBleu, double probaRed) {
         if (probaBleu + probaRed == 1) {
             Random rng = new Random();
@@ -109,28 +151,9 @@ public class GraphReader {
         return res;
     }
 
-    public String autoGraph(int nbvertex, double probaBlueVertex, double probaRedVertex, double probaBlueEdges, double probaRedEdges, double probaNoEdge) {
-        StringBuilder sB = new StringBuilder();
-        int i = 1;
-        for (; i <= nbvertex; i++) {
-            sB.append(getRandomletter());
-            sB.append(".");
-            sB.append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex));
-            sB.append(" ");
-            if (randomNoEdges(probaNoEdge)) {
-                sB.append("$");
-            }
-
-            //todo random edges
-
-			//todo random color of edges
-        }
-        return sB.toString();
-    }
-
     public String getRandomletter() {
         Random r = new Random();
-        char c = (char) (r.nextInt(26) + 'a');
+        char c = (char) (r.nextInt(26) + 'A');
         return String.valueOf(c);
     }
 }
