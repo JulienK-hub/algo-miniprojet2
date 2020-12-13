@@ -27,7 +27,8 @@ public class GraphReader {
 
     //
     static int TOUR = 0;
-    static int TOURNOEDGES = 0;
+    static int INDEX = 0;
+    static String ARR[] = new String[2];
 
     /**
      * Returns an DiGraph build from the String
@@ -96,7 +97,7 @@ public class GraphReader {
      * @param probaNoEdge : probilité d'avoir des vertex sans edges
      * @return string qui va être lu par le graph reader
      */
-    public String autoGraph(int nbvertex, double probaBlueVertex, double probaRedVertex, double probaBlueEdges, double probaRedEdges, double probaNoEdge) {
+    public String autoGraph(int nbvertex, double probaBlueVertex, double probaRedVertex, double probaBlueEdges, double probaRedEdges, double probaNoEdge, double probaBidirectionnal) {
         StringBuilder sB = new StringBuilder();
         int i = 1;
         for (; i <= nbvertex; i++) {
@@ -107,8 +108,24 @@ public class GraphReader {
                 sB.append(getRedOrBlueWithProba(probaBlueEdges, probaRedEdges));
                 sB.append(" ");
                 TOUR = 0;
+                INDEX = 0;
+
+                //bidirectionnell avec proba ???
+                if(randomBidirectionnal(probaBidirectionnal)){
+                    i+=2;
+                    System.out.println("case bidirectionnal");
+                    sB.append(ARR[1]).append(".").append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex)).append(" ").append(ARR[0]).append(".").append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex)).append(" ");
+                    sB.append(getRedOrBlueWithProba(probaBlueEdges, probaRedEdges));
+                    sB.append(" ");
+                    TOUR = 0;
+                    INDEX = 0;
+                }
             }
-            sB.append(getRandomletter());
+            String cur = getRandomletter();
+            ARR[INDEX] = cur;
+            INDEX++;
+
+            sB.append(cur);
             sB.append(".");
             sB.append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex));
             sB.append(" ");
@@ -119,6 +136,7 @@ public class GraphReader {
                 sB.append("$");
                 sB.append(" ");
                 TOUR = 0;
+                INDEX = 0;
             }
         }
         return sB.toString();
@@ -151,9 +169,26 @@ public class GraphReader {
         return res;
     }
 
+    static boolean randomBidirectionnal(double proba) {
+        boolean res = false;
+
+        Random rng = new Random();
+        double rand = rng.nextDouble();
+        if (rand < proba) {
+            res = true;
+        } else if (rand < proba + (1 - proba)) {
+            res = false;
+        }
+        return res;
+    }
+
     public String getRandomletter() {
         Random r = new Random();
         char c = (char) (r.nextInt(26) + 'A');
         return String.valueOf(c);
     }
+
+    public String[] swapVertex(String[] arr){
+        if(arr.length > 2) throw new IllegalArgumentException("size tableau non valide");
+        return new String[]{arr[1], arr[0]}; }
 }
