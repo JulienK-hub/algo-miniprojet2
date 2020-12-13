@@ -15,7 +15,7 @@ public interface VertexITF {
 	/**
 	 * Returns the id of the vertex
 	 */
-	public String getId();
+	public int getId();
 
 	/**
 	 * Returns the color of the vertex

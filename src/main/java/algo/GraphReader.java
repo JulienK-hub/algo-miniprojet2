@@ -48,23 +48,33 @@ public class GraphReader {
 
     private static void readGraph(GraphITF G, Scanner input) {
         String u, v = "";
+        String[] arr = new String[2];
+        String[] tab = new String[2];
+
         Color colorVU = Color.BLACK, colorVV = Color.BLACK, colorE = Color.BLACK;
         while (input.hasNext()) {
             u = input.next();
-            if (u.startsWith("0", 2)) {
-                colorVU = Color.RED;
-            } else if (u.startsWith("1", 2)) {
-                colorVU = Color.BLUE;
+
+            arr = u.split("\\.");
+//            if (u.startsWith("0", 2)) {
+//                colorVU = Color.RED;
+//            } else if (u.startsWith("1", 2)) {
+//                colorVU = Color.BLUE;
+//            }
+            if(arr.length > 1){
+                if(arr[1].equals("0")) colorVU = Color.RED;
+                else if(arr[1].equals("1")) colorVU = Color.BLUE;
             }
 
-            VertexITF uu = addVertex(G, u.substring(0, 1), colorVU);
+            VertexITF uu = addVertex(G, Integer.valueOf(arr[0]), colorVU);
             if (input.hasNext()) {
                 v = input.next();
-                if (v.startsWith("$")) {
+                tab = v.split("\\.");
+                if (arr[0].equals("$")) {
                     continue;
-                } else if (v.startsWith("0", 2)) {
+                } else if (arr[1].equals("0")) {
                     colorVV = Color.RED;
-                } else if (v.startsWith("1", 2)) {
+                } else if (arr[1].equals("0")) {
                     colorVV = Color.BLUE;
                 }
             }
@@ -72,7 +82,7 @@ public class GraphReader {
                 colorE = (input.nextInt() == 0) ? Color.RED : Color.BLUE;
             }
             if (!v.isEmpty()) {
-                VertexITF vv = addVertex(G, v.substring(0, 1), colorVV);
+                VertexITF vv = addVertex(G, Integer.valueOf(tab[0]), colorVV);
                 G.addEdge(uu, vv, colorE);
             }
             v = "";
@@ -80,7 +90,7 @@ public class GraphReader {
         }
     }
 
-    private static VertexITF addVertex(GraphITF G, String u, Color color) {
+    private static VertexITF addVertex(GraphITF G, int u, Color color) {
         VertexITF v = G.getVertex(u);
         if (v == null)
             return G.addVertex(u, color);
