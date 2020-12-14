@@ -123,7 +123,7 @@ public class GraphReader {
                     INDEX = 0;
                 }
             }
-            String cur = getRandomletter();
+            String cur = getRandomNumber();
             ARR[INDEX] = cur;
             INDEX++;
 
@@ -188,5 +188,9 @@ public class GraphReader {
         Random r = new Random();
         char c = (char) (r.nextInt(26) + 'A');
         return String.valueOf(c);
+    }
+
+    public static String getRandomNumber(){
+        return String.valueOf(new Random().nextInt(1000));
     }
 }
