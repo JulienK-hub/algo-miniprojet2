@@ -1,4 +1,4 @@
-package main.java.algo;
+package graph.main;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;

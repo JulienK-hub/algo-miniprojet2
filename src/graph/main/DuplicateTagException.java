@@ -1,4 +1,4 @@
-package main.java.algo;
+package graph.main;
 
 @SuppressWarnings("serial")
 public class DuplicateTagException extends RuntimeException {

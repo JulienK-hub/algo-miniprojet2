@@ -1,4 +1,4 @@
-package main.java.algo;
+package graph.main;
 
 import java.awt.*;
 

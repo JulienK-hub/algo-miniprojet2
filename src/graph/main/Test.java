@@ -1,4 +1,4 @@
-package main.java.algo;
+package graph.main;
 
 import javax.swing.text.GapContent;
 import java.util.Arrays;
