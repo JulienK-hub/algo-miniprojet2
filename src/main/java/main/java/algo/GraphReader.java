@@ -1,4 +1,4 @@
-package graph.main;
+package main.java.algo;
 
 import java.awt.*;
 import java.util.*;
@@ -123,7 +123,7 @@ public class GraphReader {
                     INDEX = 0;
                 }
             }
-            String cur = getRandomNumbers();
+            String cur = getRandomletter();
             ARR[INDEX] = cur;
             INDEX++;
 
@@ -182,10 +182,6 @@ public class GraphReader {
             res = false;
         }
         return res;
-    }
-
-    public static String getRandomNumbers(){
-       return String.valueOf(new Random().nextInt(1000));
     }
 
     public static String getRandomletter() {

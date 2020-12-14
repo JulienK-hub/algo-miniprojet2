@@ -1,5 +1,5 @@
 
-package graph.main;
+package main.java.algo;
 
 @SuppressWarnings("serial")
 public class BadVertexException extends RuntimeException {

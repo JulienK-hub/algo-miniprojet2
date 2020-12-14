@@ -1,4 +1,4 @@
-package graph.main;
+package main.java.algo;
 
 @SuppressWarnings("serial")
 public class BadInputGraphException extends RuntimeException {
