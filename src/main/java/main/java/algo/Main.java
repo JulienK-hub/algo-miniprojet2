@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
 
         Graph graph = new SingleGraph("Tutorial 1");
-        GraphITF g = GraphReader.D1Rem2;
+        GraphITF g = GraphReader.D2;
 
         List<EdgeITF> es = new ArrayList<>();
         List<VertexITF> remains = new ArrayList<>((Collection<? extends VertexITF>) g.vertices());

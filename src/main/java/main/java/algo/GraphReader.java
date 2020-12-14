@@ -22,13 +22,12 @@ public class GraphReader {
     //"Node1.Color1 $" (Pour un noeud seul)
     public static DiGraph D1Rem = diGraph("A.R E.B 0 B.R D.B 1 B.B F.B 1 C.R A.R 1");
     public static DiGraph D1Rem2 = diGraph("K.0 $ A.0 E.1 0 A.0 J.1 1 J.1 A.0 1 A.0 P.0 1 A.0 D.1 0 D.1 A.0 0 P.1 S.0 0 Q.1 H.0 0 ");
-    public static DiGraph D2 = diGraph("A.R B.R 0 B.R A.R 1");
+    public static DiGraph D1Rem3 = diGraph("09.0 $ 12.0 23.1 0 23.1 12.0 1 123.0 $");
+    public static DiGraph D2 = diGraph(autoGraph(10, 0.5, 0.5, 0.6, 0.4,0, 0.5));
     public static DiGraph D3 = diGraph("A C B D C E C G D A D F E A F B");
 
-    //
     static int TOUR = 0;
     static int INDEX = 0;
-    static String ARR[] = new String[2];
 
     /**
      * Returns an DiGraph build from the String
@@ -49,22 +48,26 @@ public class GraphReader {
     private static void readGraph(GraphITF G, Scanner input) {
         String u, v = "";
         Color colorVU = Color.BLACK, colorVV = Color.BLACK, colorE = Color.BLACK;
+        String[] arr;
         while (input.hasNext()) {
             u = input.next();
-            if (u.startsWith("0", 2)) {
-                colorVU = Color.RED;
-            } else if (u.startsWith("1", 2)) {
-                colorVU = Color.BLUE;
+            arr = u.split("\\.");
+            if(arr.length > 1){
+                if (arr[1].startsWith("0")) {
+                    colorVU = Color.RED;
+                } else if (arr[1].startsWith("1")) {
+                    colorVU = Color.BLUE;
+                }
             }
-
-            VertexITF uu = addVertex(G, u.substring(0, 1), colorVU);
+            VertexITF uu = addVertex(G, arr[0], colorVU);
             if (input.hasNext()) {
                 v = input.next();
-                if (v.startsWith("$")) {
+                arr = v.split("\\.");//[.]
+                if (arr[0].startsWith("$")) {
                     continue;
-                } else if (v.startsWith("0", 2)) {
+                } else if (arr[0].startsWith("0")) {
                     colorVV = Color.RED;
-                } else if (v.startsWith("1", 2)) {
+                } else if (arr[0].startsWith("1")) {
                     colorVV = Color.BLUE;
                 }
             }
@@ -72,11 +75,10 @@ public class GraphReader {
                 colorE = (input.nextInt() == 0) ? Color.RED : Color.BLUE;
             }
             if (!v.isEmpty()) {
-                VertexITF vv = addVertex(G, v.substring(0, 1), colorVV);
+                VertexITF vv = addVertex(G, arr[0], colorVV);
                 G.addEdge(uu, vv, colorE);
             }
             v = "";
-
         }
     }
 
@@ -97,10 +99,10 @@ public class GraphReader {
      * @param probaNoEdge : probilité d'avoir des vertex sans edges
      * @return string qui va être lu par le graph reader
      */
-    public String autoGraph(int nbvertex, double probaBlueVertex, double probaRedVertex, double probaBlueEdges, double probaRedEdges, double probaNoEdge, double probaBidirectionnal) {
+    public static String autoGraph(int nbvertex, double probaBlueVertex, double probaRedVertex, double probaBlueEdges, double probaRedEdges, double probaNoEdge, double probaBidirectionnal) {
         StringBuilder sB = new StringBuilder();
-        int i = 1;
-        for (; i <= nbvertex; i++) {
+        String[] ARR = new String[2];
+        for (int i = 1; i <= nbvertex; i++) {
             //case : 2 sommets crées
             System.out.println("i -->" + i);
             if(TOUR == 2){
@@ -182,13 +184,9 @@ public class GraphReader {
         return res;
     }
 
-    public String getRandomletter() {
+    public static String getRandomletter() {
         Random r = new Random();
         char c = (char) (r.nextInt(26) + 'A');
         return String.valueOf(c);
     }
-
-    public String[] swapVertex(String[] arr){
-        if(arr.length > 2) throw new IllegalArgumentException("size tableau non valide");
-        return new String[]{arr[1], arr[0]}; }
 }
