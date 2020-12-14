@@ -23,11 +23,13 @@ public class GraphReader {
     public static DiGraph D1Rem = diGraph("A.R E.B 0 B.R D.B 1 B.B F.B 1 C.R A.R 1");
     public static DiGraph D1Rem2 = diGraph("K.0 $ A.0 E.1 0 A.0 J.1 1 J.1 A.0 1 A.0 P.0 1 A.0 D.1 0 D.1 A.0 0 P.1 S.0 0 Q.1 H.0 0 ");
     public static DiGraph D1Rem3 = diGraph("09.0 $ 12.0 23.1 0 23.1 12.0 1 123.0 $");
-    public static DiGraph D2 = diGraph(autoGraph(10, 0.5, 0.5, 0.6, 0.4,0, 0.5));
+    public static String input = autoGraph(9, 0.5, 0.5, 0.6, 0.4, 0, 1);
+    public static DiGraph D2 = diGraph(input);
     public static DiGraph D3 = diGraph("A C B D C E C G D A D F E A F B");
 
     static int TOUR = 0;
     static int INDEX = 0;
+    static String VERTEX;
 
     /**
      * Returns an DiGraph build from the String
@@ -52,7 +54,7 @@ public class GraphReader {
         while (input.hasNext()) {
             u = input.next();
             arr = u.split("\\.");
-            if(arr.length > 1){
+            if (arr.length > 1) {
                 if (arr[1].startsWith("0")) {
                     colorVU = Color.RED;
                 } else if (arr[1].startsWith("1")) {
@@ -90,22 +92,23 @@ public class GraphReader {
     }
 
     /**
-     *
-     * @param nbvertex : nombre de sommets qu'on souhaite
+     * @param nbvertex        : nombre de sommets qu'on souhaite
      * @param probaBlueVertex : probabilité d'avoir des vertex bleu dans le graphe
-     * @param probaRedVertex : probabilité d'avoir des vertex rouge dans le graphe
-     * @param probaBlueEdges : probabilité d'avoir des edges bleu dans le graphe
-     * @param probaRedEdges : probabilité d'avoir des edges rouge dans le graphe
-     * @param probaNoEdge : probilité d'avoir des vertex sans edges
+     * @param probaRedVertex  : probabilité d'avoir des vertex rouge dans le graphe
+     * @param probaBlueEdges  : probabilité d'avoir des edges bleu dans le graphe
+     * @param probaRedEdges   : probabilité d'avoir des edges rouge dans le graphe
+     * @param probaNoEdge     : probilité d'avoir des vertex sans edges
      * @return string qui va être lu par le graph reader
      */
     public static String autoGraph(int nbvertex, double probaBlueVertex, double probaRedVertex, double probaBlueEdges, double probaRedEdges, double probaNoEdge, double probaBidirectionnal) {
         StringBuilder sB = new StringBuilder();
+        Random r = new Random();
         String[] ARR = new String[2];
+        boolean change = false;
         for (int i = 1; i <= nbvertex; i++) {
             //case : 2 sommets crées
             System.out.println("i -->" + i);
-            if(TOUR == 2){
+            if (TOUR == 2) {
                 //edge rouge ou bleu
                 sB.append(getRedOrBlueWithProba(probaBlueEdges, probaRedEdges));
                 sB.append(" ");
@@ -113,12 +116,16 @@ public class GraphReader {
                 INDEX = 0;
 
                 //bidirectionnell avec proba ???
-                if(randomBidirectionnal(probaBidirectionnal)){
-                    i+=2;
+                if (randomBidirectionnal(probaBidirectionnal)) {
+                    i += 2;
                     System.out.println("case bidirectionnal");
                     sB.append(ARR[1]).append(".").append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex)).append(" ").append(ARR[0]).append(".").append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex)).append(" ");
                     sB.append(getRedOrBlueWithProba(probaBlueEdges, probaRedEdges));
                     sB.append(" ");
+
+                    int c = r.nextInt(2);
+                    VERTEX = ARR[c];
+                    change = true;
                     TOUR = 0;
                     INDEX = 0;
                 }
@@ -127,13 +134,16 @@ public class GraphReader {
             ARR[INDEX] = cur;
             INDEX++;
 
-            sB.append(cur);
+            if (change) {
+                sB.append(VERTEX);
+                change = false;
+            } else sB.append(cur);
             sB.append(".");
             sB.append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex));
             sB.append(" ");
             TOUR++;
 
-            if(TOUR == 1 && randomNoEdges(probaNoEdge)){
+            if (TOUR == 1 && randomNoEdges(probaNoEdge)) {
                 //case : 1 sommet crée et proba tombe sans edge
                 sB.append("$");
                 sB.append(" ");
@@ -141,6 +151,41 @@ public class GraphReader {
                 INDEX = 0;
             }
         }
+        return sB.toString();
+    }
+
+    public static String autoGraphComplet(int nbvertex, double probaBlueVertex, double probaRedVertex, double probaBlueEdges, double probaRedEdges) {
+        StringBuilder sB = new StringBuilder();
+        Random r = new Random();
+        int index = 0;
+        int tour = 1;
+        String[] tab = new String[2];
+        boolean step = false;
+        for (int i = 0; i <= nbvertex; i++) {
+            String cur = getRandomNumber();
+            if (tour != 3) {
+                tab[index] = cur;
+            }
+
+            if (tour == 3) {
+                sB.append(getRedOrBlueWithProba(probaBlueEdges, probaRedEdges)).append(" ");
+                sB.append(tab[1]).append(".").append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex)).append(" ").append(tab[0]).append(".").append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex)).append(" ").append(getRedOrBlueWithProba(probaBlueEdges, probaRedEdges)).append(" ");
+                index = 0;
+                tour = 1;
+                i += 2;
+                step = true;
+            }
+
+            if (step) {
+                cur = tab[r.nextInt(2)];
+                step = false;
+                i++;
+            }
+            sB.append(cur).append(".").append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex)).append(" ");
+            tour++;
+            index++;
+        }
+
         return sB.toString();
     }
 
@@ -190,7 +235,7 @@ public class GraphReader {
         return String.valueOf(c);
     }
 
-    public static String getRandomNumber(){
+    public static String getRandomNumber() {
         return String.valueOf(new Random().nextInt(1000));
     }
 }
