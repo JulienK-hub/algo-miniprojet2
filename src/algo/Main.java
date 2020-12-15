@@ -10,10 +10,10 @@ public class Main {
 		Vertex v2 = new Vertex(2,Color.BLUE);
 		Vertex v3 = new Vertex(3,Color.RED);
 		Vertex v4 = new Vertex(4,Color.BLUE);
-		Vertex v5 = new Vertex(5,Color.BLUE);
+		Vertex v5 = new Vertex(5,Color.RED);
 		Vertex v6 = new Vertex(6,Color.RED);
 		Vertex v7 = new Vertex(7,Color.RED);
-		Vertex v8 = new Vertex(8,Color.BLUE);
+		Vertex v8 = new Vertex(8,Color.RED);
 		
 		
 		Edge edgeV1 = new Edge(v1,v2,Color.RED);

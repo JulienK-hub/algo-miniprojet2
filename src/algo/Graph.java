@@ -39,14 +39,14 @@ public class Graph {
 		String res= "";
 		getListREDVertex();
 		
-		Vertex vertexToSuppr = getNextRedVertexWithoutBlueExitingEdges();
+		/*Vertex vertexToSuppr = getNextRedVertexWithoutBlueExitingEdges();
 		while (vertexToSuppr != null) {
 			
 			res += suppr(vertexToSuppr);
 			vertexToSuppr = getNextRedVertexWithoutBlueExitingEdges();
 			System.out.println(this);
-		}
-		vertexToSuppr = getNextRedVertexWhichDoesntChangeRedNeighbourToBlue();
+		}*/
+		Vertex vertexToSuppr = getNextRedVertexWhichDoesntChangeRedNeighbourToBlue();
 		
 		while (vertexToSuppr != null) {
 			res += suppr(vertexToSuppr);
