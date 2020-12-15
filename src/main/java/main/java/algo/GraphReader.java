@@ -156,8 +156,7 @@ public class GraphReader {
         }
         return sB.toString();
     }
-    public static DiGraph D1Rem4 = diGraph(autoGraphComplet(6
-            , 0.5, 0.5, 0.6, 0.4));
+    public static DiGraph D1Rem4 = diGraph(autoGraphComplet(100, 0.5, 0.5, 0.6, 0.4));
 
     public static String autoGraphComplet(int nbvertex, double probaBlueVertex, double probaRedVertex, double probaBlueEdges, double probaRedEdges) {
         StringBuilder sB = new StringBuilder();
@@ -175,8 +174,8 @@ public class GraphReader {
             if (nbvertexBase %2 == 1 && i == nbvertex-1)
                 break;
 
-            cur1 = String.valueOf(new Random().nextInt(1000));
-            cur2 = String.valueOf(new Random().nextInt(1000));
+            cur1 = String.valueOf(new Random().nextInt(1999999999));
+            cur2 = String.valueOf(new Random().nextInt(1999999999));
 
             //Faire l'insertion sb
             pv1 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);
@@ -209,10 +208,11 @@ public class GraphReader {
         }
         if (nbvertexBase %2 ==1){
             int s = l.size();
-            String cur3 = String.valueOf(new Random().nextInt(1000));
+            String cur3 = String.valueOf(new Random().nextInt(1999999999));
             for (int j = 0 ; j < s ; j++){
                 //faire les combinaisons avec cur1 -> l.get(j) cur1 <- l.get(j) && cur2 -> l.get(j) cur2 <- l.get(j)
-                sB.append(cur3).append(".").append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex)).append(" ").append(l.get(j)).append(".").append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex)).append(" ").append(getRedOrBlueWithProba(probaBlueEdges, probaRedEdges)).append( " ").append(l.get(j)).append(".").append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex)).append(" ").append(cur3).append(".").append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex)).append(" ").append(getRedOrBlueWithProba(probaBlueEdges, probaRedEdges)).append( " ");
+                pv1 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex); pv2 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);pe1 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);pe2 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);
+                sB.append(cur3).append(".").append(pv1).append(" ").append(l.get(j)).append(".").append(pv2).append(" ").append(pe1).append( " ").append(l.get(j)).append(".").append(pv2).append(" ").append(cur3).append(".").append(pv1).append(" ").append(pe2).append( " ");
             }
         }
         System.out.println("sB.toString() = " + sB.toString());
