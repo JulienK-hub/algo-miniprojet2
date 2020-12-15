@@ -54,7 +54,19 @@ public class DiGraph extends AbstractGraph {
 //			System.out.println("les edges sont de retours : "+ edg);
 //			System.out.println("vertex " + v);
 			edg.destination().setColor(edg.color());
+			/*
+			if(edg.destination() == v){
+				System.out.println("blelbelbelbelbe");
+				removeEdge(edg.origin(), v);
+			}
+			*/
 		}
+
+		//Map<VertexITF,Map<VertexITF, EdgeITF>> edgs = this.edges;
+		//Set<VertexITF, EdgeITF> soumap = edgs.entrySet();
+
+		//remove edges ici mais pas entrantes
+		edges.remove(v);
 		vertices().remove(v);
 		return true;
 	}

@@ -31,8 +31,8 @@ public class TestGraph {
 		G.removeVertex(G.getRandomVertex());
 		System.out.println();
 		System.out.println("\nVertices apres supression:");
-		for ( VertexITF vertex :  G.vertices() )
-			System.out.print(vertex.getTag() + " " + vertex.getColor());
+		for ( VertexITF v :  G.vertices() )
+			System.out.print(v.getTag() + " " + v.getColor());
 
 		System.out.println("\nEdges (apres) enumeration:");
 		for ( EdgeITF edge :  G.edges() )
