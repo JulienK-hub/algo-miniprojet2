@@ -333,7 +333,7 @@ public abstract class AbstractGraph implements GraphITF {
 	}
 	
 	// an inner class to build iterators over all edges
-	private class EdgeIterator implements Iterable<EdgeITF>, Iterator<EdgeITF> {
+	public class EdgeIterator implements Iterable<EdgeITF>, Iterator<EdgeITF> {
 		
 		Iterator<Map.Entry<VertexITF,Map<VertexITF,EdgeITF>>> firstMapIterator;
 		Iterator<Map.Entry<VertexITF,EdgeITF>> secondMapIterator;

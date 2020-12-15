@@ -1,9 +1,7 @@
 package main.java.algo;
-
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-
 /**
  * This is a convenience class to build a graph from an input String.
  * <p>
@@ -21,17 +19,8 @@ public class GraphReader {
     //Colors : 0 = Rouge ; 1 = Bleu
     //"Node1.ColorN1 Node2.ColorN2 ColorEdge" Pour deux noeud liés
     //"Node1.Color1 $" (Pour un noeud seul)
-    public static DiGraph D1Rem = diGraph("A.R E.B 0 B.R D.B 1 B.B F.B 1 C.R A.R 1");
-    public static DiGraph D1Rem2 = diGraph("K.0 $ A.0 E.1 0 A.0 J.1 1 J.1 A.0 1 A.0 P.0 1 A.0 D.1 0 D.1 A.0 0 P.1 S.0 0 Q.1 H.0 0 ");
-    public static DiGraph D1Rem3 = diGraph("09.0 $ 12.0 23.1 0 23.1 12.0 1 123.0 $");
     public static String input = autoGraphComplet(3, 0.5, 0.5, 0.6, 0.4);
     public static DiGraph D2 = diGraph(input);
-    public static DiGraph D3 = diGraph("A C B D C E C G D A D F E A F B");
-
-    static int TOUR = 0;
-    static int INDEX = 0;
-    static String VERTEX;
-
     /**
      * Returns an DiGraph build from the String
      * representation 'input'
@@ -41,20 +30,19 @@ public class GraphReader {
         readGraph(G, input);
         return G;
     }
-
     private static void readGraph(GraphITF G, String input) {
         Scanner scanner = new Scanner(input);
         readGraph(G, scanner);
         scanner.close();
     }
-
     private static void readGraph(GraphITF G, Scanner input) {
         String u, v = "";
         Color colorVU = Color.BLACK, colorVV = Color.BLACK, colorE = Color.BLACK;
         String[] arr;
+        int i = 0;
         while (input.hasNext()) {
             u = input.next();
-            arr = u.split("\\.");
+            arr = u.split("[.]");
             if (arr.length > 1) {
                 if (arr[1].startsWith("0")) {
                     colorVU = Color.RED;
@@ -62,102 +50,38 @@ public class GraphReader {
                     colorVU = Color.BLUE;
                 }
             }
-            System.out.println("larray "+arr[0]);
+            System.out.println("La couleur VU "+ i +colorVU);
             VertexITF uu = addVertex(G, arr[0], colorVU);
             if (input.hasNext()) {
                 v = input.next();
-                arr = v.split("\\.");//[.]
-                if (arr[0].startsWith("$")) {
-                    continue;
-                } else if (arr[0].startsWith("0")) {
+                arr = v.split("[.]");//[.]
+                if (arr[1].startsWith("0")) {
                     colorVV = Color.RED;
-                } else if (arr[0].startsWith("1")) {
+                } else if (arr[1].startsWith("1")) {
                     colorVV = Color.BLUE;
                 }
             }
             if (input.hasNextInt()) {
-                colorE = (input.nextInt() == 0) ? Color.RED : Color.BLUE;
+                int nb = input.nextInt();
+                System.out.println(nb);
+                colorE = (nb == 0) ? Color.RED : Color.BLUE;
             }
             if (!v.isEmpty()) {
-                System.out.println("larray2 "+arr[0]);
+                System.out.println("La couleur VV"+i+colorVV);
                 VertexITF vv = addVertex(G, arr[0], colorVV);
                 G.addEdge(uu, vv, colorE);
             }
             v = "";
+            i++;
         }
     }
-
     private static VertexITF addVertex(GraphITF G, String u, Color color) {
         VertexITF v = G.getVertex(u);
         if (v == null)
             return G.addVertex(u, color);
         return v;
     }
-
-    /**
-     * @param nbvertex        : nombre de sommets qu'on souhaite
-     * @param probaBlueVertex : probabilité d'avoir des vertex bleu dans le graphe
-     * @param probaRedVertex  : probabilité d'avoir des vertex rouge dans le graphe
-     * @param probaBlueEdges  : probabilité d'avoir des edges bleu dans le graphe
-     * @param probaRedEdges   : probabilité d'avoir des edges rouge dans le graphe
-     * @param probaNoEdge     : probilité d'avoir des vertex sans edges
-     * @return string qui va être lu par le graph reader
-     */
-    public static String autoGraph(int nbvertex, double probaBlueVertex, double probaRedVertex, double probaBlueEdges, double probaRedEdges, double probaNoEdge, double probaBidirectionnal) {
-        StringBuilder sB = new StringBuilder();
-        Random r = new Random();
-        String[] ARR = new String[2];
-        boolean change = false;
-        for (int i = 1; i <= nbvertex; i++) {
-            //case : 2 sommets crées
-            System.out.println("i -->" + i);
-            if (TOUR == 2) {
-                //edge rouge ou bleu
-                sB.append(getRedOrBlueWithProba(probaBlueEdges, probaRedEdges));
-                sB.append(" ");
-                TOUR = 0;
-                INDEX = 0;
-
-                //bidirectionnell avec proba ???
-                if (randomBidirectionnal(probaBidirectionnal)) {
-                    i += 2;
-                    System.out.println("case bidirectionnal");
-                    sB.append(ARR[1]).append(".").append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex)).append(" ").append(ARR[0]).append(".").append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex)).append(" ");
-                    sB.append(getRedOrBlueWithProba(probaBlueEdges, probaRedEdges));
-                    sB.append(" ");
-
-                    int c = r.nextInt(2);
-                    VERTEX = ARR[c];
-                    change = true;
-                    TOUR = 0;
-                    INDEX = 0;
-                }
-            }
-            String cur = String.valueOf(new Random().nextInt(1000));
-            ARR[INDEX] = cur;
-            INDEX++;
-
-            if (change) {
-                sB.append(VERTEX);
-                change = false;
-            } else sB.append(cur);
-            sB.append(".");
-            sB.append(getRedOrBlueWithProba(probaBlueVertex, probaRedVertex));
-            sB.append(" ");
-            TOUR++;
-
-            if (TOUR == 1 && randomNoEdges(probaNoEdge)) {
-                //case : 1 sommet crée et proba tombe sans edge
-                sB.append("$");
-                sB.append(" ");
-                TOUR = 0;
-                INDEX = 0;
-            }
-        }
-        return sB.toString();
-    }
-    public static DiGraph D1Rem4 = diGraph(autoGraphComplet(3, 0.5, 0.5, 0.6, 0.4));
-
+    public static DiGraph D1Rem4 = diGraph(autoGraphComplet(4, 0.5, 0.5, 0.6, 0.4));
     public static String autoGraphComplet(int nbvertex, double probaBlueVertex, double probaRedVertex, double probaBlueEdges, double probaRedEdges) {
         StringBuilder sB = new StringBuilder();
         int nbvertexBase = nbvertex;
@@ -165,7 +89,7 @@ public class GraphReader {
             nbvertex = nbvertex/2;
         else
             nbvertex = (nbvertex/2)+1;
-        List<String> l = new ArrayList<>();
+        Map<String, String> l = new HashMap<>();
         String cur1 ="";
         String cur2 ="";
         int pv1;int pv2;int pe1;int pe2;
@@ -173,52 +97,45 @@ public class GraphReader {
             //Lorsque le nombre de vertex et impaire on va quitter cette boucle pour créer un dernier noeud et le relier avec tous les autres dans la liste
             if (nbvertexBase %2 == 1 && i == nbvertex-1)
                 break;
-
             cur1 = String.valueOf(new Random().nextInt(1999999999));
             cur2 = String.valueOf(new Random().nextInt(1999999999));
-
             //Faire l'insertion sb
             pv1 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);
             pv2 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);
             pe1 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);
             pe2 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);
-
             sB.append(cur1).append(".").append(pv1).append(" ").append(cur2).append(".").append(pv2).append(" ").append(pe1).append(" ");
             sB.append(cur2).append(".").append(pv2).append(" ").append(cur1).append(".").append(pv1).append(" ").append(pe2).append(" ");
-
             int s = l.size();
             if (s == 0){
-                l.add(cur1);
-                l.add(cur2);
+                l.put(cur1, String.valueOf(pv1));
+                l.put(cur2, String.valueOf(pv1));
                 continue;
             }
-            for (String value : l) {
+            for (Map.Entry<String, String> value : l.entrySet()) {
                 //faire les combinaisons avec cur1 -> l.get(j) cur1 <- l.get(j) && cur2 -> l.get(j) cur2 <- l.get(j)
-                pv1 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex); pv2 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);pe1 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);pe2 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);
-                sB.append(cur1).append(".").append(pv1).append(" ").append(value).append(".").append(pv2).append(" ").append(pe1).append(" ");
-                sB.append(value).append(".").append(pv2).append(" ").append(cur1).append(".").append(pv1).append(" ").append(pe2).append(" ");
-                pv1 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);pv2 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);pe1 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);pe2 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);
-                sB.append(cur2).append(".").append(pv1).append(" ").append(value).append(".").append(pv2).append(" ").append(pe1).append(" ");
-                sB.append(value).append(".").append(pv2).append(" ").append(cur2).append(".").append(pv1).append(" ").append(pe2).append(" ");
+                pv1 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);pe1 = getRedOrBlueWithProba(probaBlueEdges, probaRedEdges);pe2 = getRedOrBlueWithProba(probaBlueEdges, probaRedEdges);
+                sB.append(cur1).append(".").append(pv1).append(" ").append(value.getKey()).append(".").append(value.getValue()).append(" ").append(pe1).append(" ");
+                sB.append(value.getKey()).append(".").append(value.getValue()).append(" ").append(cur1).append(".").append(pv1).append(" ").append(pe2).append(" ");
+                pv1 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);pe1 = getRedOrBlueWithProba(probaBlueEdges, probaRedEdges);pe2 = getRedOrBlueWithProba(probaBlueEdges, probaRedEdges);
+                sB.append(cur2).append(".").append(pv1).append(" ").append(value.getKey()).append(".").append(value.getValue()).append(" ").append(pe1).append(" ");
+                sB.append(value.getKey()).append(".").append(value.getValue()).append(" ").append(cur2).append(".").append(pv1).append(" ").append(pe2).append(" ");
             }
-
-
-            l.add(cur1);
-            l.add(cur2);
+            l.put(cur1, String.valueOf(pv1));
+            l.put(cur2, String.valueOf(pv1));
         }
         if (nbvertexBase %2 ==1){
-            int s = l.size();
             String cur3 = String.valueOf(new Random().nextInt(1999999999));
-            for (int j = 0 ; j < s ; j++){
+            for (Map.Entry<String, String> value : l.entrySet()){
                 //faire les combinaisons avec cur1 -> l.get(j) cur1 <- l.get(j) && cur2 -> l.get(j) cur2 <- l.get(j)
-                pv1 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex); pv2 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);pe1 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);pe2 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);
-                sB.append(cur3).append(".").append(pv1).append(" ").append(l.get(j)).append(".").append(pv2).append(" ").append(pe1).append( " ").append(l.get(j)).append(".").append(pv2).append(" ").append(cur3).append(".").append(pv1).append(" ").append(pe2).append( " ");
+                pv1 = getRedOrBlueWithProba(probaBlueVertex, probaRedVertex);pe1 = getRedOrBlueWithProba(probaBlueEdges, probaRedEdges);pe2 = getRedOrBlueWithProba(probaBlueEdges, probaRedEdges);
+                sB.append(cur3).append(".").append(pv1).append(" ").append(value.getKey()).append(".").append(value.getValue()).append(" ").append(pe1).append( " ");
+                sB.append(value.getKey()).append(".").append(value.getValue()).append(" ").append(cur3).append(".").append(pv1).append(" ").append(pe2).append( " ");
             }
         }
         System.out.println("sB.toString() = " + sB.toString());
         return sB.toString();
     }
-
     static int getRedOrBlueWithProba(double probaBleu, double probaRed) {
         if (probaBleu + probaRed == 1) {
             Random rng = new Random();
@@ -232,10 +149,8 @@ public class GraphReader {
         } else
             return 99;
     }
-
     static boolean randomNoEdges(double proba) {
         boolean res = false;
-
         Random rng = new Random();
         double rand = rng.nextDouble();
         if (rand < proba) {
@@ -245,10 +160,8 @@ public class GraphReader {
         }
         return res;
     }
-
     static boolean randomBidirectionnal(double proba) {
         boolean res = false;
-
         Random rng = new Random();
         double rand = rng.nextDouble();
         if (rand < proba) {

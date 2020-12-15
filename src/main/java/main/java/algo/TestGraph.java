@@ -36,7 +36,8 @@ public class TestGraph {
 
 		System.out.println("\nEdges (apres) enumeration:");
 		for ( EdgeITF edge :  G.edges() )
-			System.out.print("(" + edge.origin() + "," + edge.destination() + "," + ((edge.color().equals(Color.RED)) ? "RED" : "BLUE" )+") ");
+			if(edge != null)
+				System.out.print("(" + edge.origin() + "," + edge.destination() + "," + ((edge.color().equals(Color.RED)) ? "RED" : "BLUE" )+") ");
 		System.out.println();
 
 		/*

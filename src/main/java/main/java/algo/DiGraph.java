@@ -9,47 +9,48 @@ import java.util.List;
  */
 public class DiGraph extends AbstractGraph {
 
-	// inDegree[u] is the in-degree of u	
-	private Map<VertexITF,Integer> inDegree;
-	
-	/**
-	 * builds a directed graph with no vertex
-	 */
-	public DiGraph() {
-		super();
-		inDegree = new HashMap<VertexITF,Integer>();
-	}
-	
-	@Override
-	public VertexITF addVertex(String tag,Color color) {
-		VertexITF v = super.addVertex(tag,color);
-		inDegree.put(v,0);
-		return v;
-	}
-		
-	@Override
-	public void addEdge(VertexITF u, VertexITF v, Color color) {
-		checkVertex(u);
-		checkVertex(v);		
-		if ( add(u,v,color) ) {
-			storeEdge(u,v,color);
-			nbEdges++;
-			inDegree.put(v,inDegree.get(v)+1);
-		}
-	}
+    // inDegree[u] is the in-degree of u
+    private Map<VertexITF, Integer> inDegree;
 
-	@Override
-	public void removeEdge(VertexITF u, VertexITF v) {
-		checkVertex(u);
-		checkVertex(v);		
-		if ( remove(u,v) ) {
-			nbEdges--;
-			inDegree.put(v,inDegree.get(v)-1);
-		}
-	}
+    /**
+     * builds a directed graph with no vertex
+     */
+    public DiGraph() {
+        super();
+        inDegree = new HashMap<VertexITF, Integer>();
+    }
 
-	@Override
-	public boolean removeVertex(VertexITF v){
+    @Override
+    public VertexITF addVertex(String tag, Color color) {
+        VertexITF v = super.addVertex(tag, color);
+        inDegree.put(v, 0);
+        return v;
+    }
+
+    @Override
+    public void addEdge(VertexITF u, VertexITF v, Color color) {
+        checkVertex(u);
+        checkVertex(v);
+        if (add(u, v, color)) {
+            storeEdge(u, v, color);
+            nbEdges++;
+            inDegree.put(v, inDegree.get(v) + 1);
+        }
+    }
+
+    @Override
+    public void removeEdge(VertexITF u, VertexITF v) {
+        checkVertex(u);
+        checkVertex(v);
+        if (remove(u, v)) {
+            nbEdges--;
+            inDegree.put(v, inDegree.get(v) - 1);
+        }
+    }
+
+    @Override
+    public boolean removeVertex(VertexITF v) {
+		/*
 		for(EdgeITF edg : this.incidents(v)){
 //			System.out.println("les edges sont de retours : "+ edg);
 //			System.out.println("vertex " + v);
@@ -59,54 +60,64 @@ public class DiGraph extends AbstractGraph {
 				System.out.println("blelbelbelbelbe");
 				removeEdge(edg.origin(), v);
 			}
-			*/
+
 		}
+		*/
 
-		//Map<VertexITF,Map<VertexITF, EdgeITF>> edgs = this.edges;
-		//Set<VertexITF, EdgeITF> soumap = edgs.entrySet();
+        //EdgeIterator edgeIterator = new EdgeIterator();
+        this.edges.forEach((v1, m2) -> {
+            m2.forEach((v2, edge) -> {
+				edge.destination().setColor(edge.color());
+				if(edge.destination().equals(v)){
+					System.out.println("entrer");
+					m2.put(v, null);
+				}
+				System.out.println("edge " + edge + " V1 -- > " + v1 + " V2 --> " + v2);
+            });
+        });
 
-		//remove edges ici mais pas entrantes
-		edges.remove(v);
-		vertices().remove(v);
-		return true;
-	}
-	protected boolean remove(VertexITF u, VertexITF v) {
-		if ( adjacencyList.get(u).contains(v) )
-			return false;
-		adjacencyList.get(u).remove(v);
-		return false;
-	}
+        edges.remove(v);
+        vertices().remove(v);
+        return true;
+    }
 
-	
-	@Override
-	public int degree(VertexITF u) {
-		checkVertex(u);
-		return outDegree(u) + inDegree(u);
-	}
+    protected boolean remove(VertexITF u, VertexITF v) {
+        if (adjacencyList.get(u).contains(v))
+            return false;
+        adjacencyList.get(u).remove(v);
+        return false;
+    }
 
-	/**
-	 * returns the in-degree of u
-	 */	
-	public int inDegree(VertexITF u) {
-		checkVertex(u);
-		return inDegree.get(u);
-	}
-	
-	/**
-	 * returns the out-degree of u
-	 */
-	public int outDegree(VertexITF u) {
-		checkVertex(u);
-		return adjacencyList.get(u).size();
-	}
-	
-	@Override
-	public String toString() {
-		return "Directed Graph\n" + super.toString();
-	}
 
-	@Override
-	protected EdgeITF findEdge(VertexITF u, VertexITF v) {
-		return edges.get(u).get(v);
-	}
+    @Override
+    public int degree(VertexITF u) {
+        checkVertex(u);
+        return outDegree(u) + inDegree(u);
+    }
+
+    /**
+     * returns the in-degree of u
+     */
+    public int inDegree(VertexITF u) {
+        checkVertex(u);
+        return inDegree.get(u);
+    }
+
+    /**
+     * returns the out-degree of u
+     */
+    public int outDegree(VertexITF u) {
+        checkVertex(u);
+        return adjacencyList.get(u).size();
+    }
+
+    @Override
+    public String toString() {
+        return "Directed Graph\n" + super.toString();
+    }
+
+    @Override
+    protected EdgeITF findEdge(VertexITF u, VertexITF v) {
+        return edges.get(u).get(v);
+    }
 }
