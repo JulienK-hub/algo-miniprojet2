@@ -156,7 +156,7 @@ public class GraphReader {
         }
         return sB.toString();
     }
-    public static DiGraph D1Rem4 = diGraph(autoGraphComplet(100, 0.5, 0.5, 0.6, 0.4));
+    public static DiGraph D1Rem4 = diGraph(autoGraphComplet(3, 0.5, 0.5, 0.6, 0.4));
 
     public static String autoGraphComplet(int nbvertex, double probaBlueVertex, double probaRedVertex, double probaBlueEdges, double probaRedEdges) {
         StringBuilder sB = new StringBuilder();

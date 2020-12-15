@@ -2,6 +2,7 @@ package main.java.algo;
 
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * A class for directed graph
@@ -46,6 +47,24 @@ public class DiGraph extends AbstractGraph {
 			inDegree.put(v,inDegree.get(v)-1);
 		}
 	}
+
+	@Override
+	public boolean removeVertex(VertexITF v){
+		for(EdgeITF edg : this.incidents(v)){
+//			System.out.println("les edges sont de retours : "+ edg);
+//			System.out.println("vertex " + v);
+			edg.destination().setColor(edg.color());
+		}
+		vertices().remove(v);
+		return true;
+	}
+	protected boolean remove(VertexITF u, VertexITF v) {
+		if ( adjacencyList.get(u).contains(v) )
+			return false;
+		adjacencyList.get(u).remove(v);
+		return false;
+	}
+
 	
 	@Override
 	public int degree(VertexITF u) {

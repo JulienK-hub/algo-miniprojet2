@@ -114,5 +114,7 @@ public interface GraphITF {
 	 * Notice: for UnDiGraph, outDegree(v) = degree(v)
 	 */		
 	public int outDegree(VertexITF u);
+
+	public boolean removeVertex(VertexITF v);
 	
 }

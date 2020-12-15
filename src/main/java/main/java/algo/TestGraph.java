@@ -18,7 +18,28 @@ public class TestGraph {
 		for ( VertexITF vertex :  G.vertices() )
 			System.out.print(vertex.getTag() + " ");
 		System.out.println();
-		
+
+		System.out.println("\nVertices avant supression:");
+		for ( VertexITF vertex :  G.vertices() )
+			System.out.print(vertex.getTag() + " " + vertex.getColor());
+
+		System.out.println("\nEdges (avant) enumeration:");
+		for ( EdgeITF edge :  G.edges() )
+			System.out.print("(" + edge.origin() + "," + edge.destination() + "," + ((edge.color().equals(Color.RED)) ? "RED" : "BLUE" )+") ");
+		System.out.println();
+
+		G.removeVertex(G.getRandomVertex());
+		System.out.println();
+		System.out.println("\nVertices apres supression:");
+		for ( VertexITF vertex :  G.vertices() )
+			System.out.print(vertex.getTag() + " " + vertex.getColor());
+
+		System.out.println("\nEdges (apres) enumeration:");
+		for ( EdgeITF edge :  G.edges() )
+			System.out.print("(" + edge.origin() + "," + edge.destination() + "," + ((edge.color().equals(Color.RED)) ? "RED" : "BLUE" )+") ");
+		System.out.println();
+
+		/*
 		System.out.println("\nEdges enumeration:");
 		for ( EdgeITF edge :  G.edges() )
 			System.out.print("(" + edge.origin() + "," + edge.destination() + "," + ((edge.color().equals(Color.RED)) ? "RED" : "BLUE" )+") ");
@@ -54,14 +75,14 @@ public class TestGraph {
 		for ( VertexITF vertex :  G.vertices() )
 			System.out.println("degree(" + vertex + ") = " + G.degree(vertex));
 		System.out.println();
-		
+		*/
 	}
 
 	/**
 	 * You can display information about graph here
 	 */
 	public static void main(String[] args) {
-		testGraphMethods("D1:",GraphReader.D1Rem2);
+		testGraphMethods("D1:",GraphReader.D1Rem4);
 		//// you can test more graphs here
 	}
 }

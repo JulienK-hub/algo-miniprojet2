@@ -103,10 +103,14 @@ public abstract class AbstractGraph implements GraphITF {
 	 * of the graph. The vertices come in random
 	 * order
 	 */
-	public Iterable<VertexITF> vertices() {
+	public Set<VertexITF> vertices() {
 		return adjacencyList.keySet();
 	}
-	
+
+//	public List<VertexITF> verticos() {
+//		//List<String> l = new ArrayList<String>(map.keySet());
+//	}
+
 	/**
 	 * Returns an iterable object over the edges
 	 * of the graph. The edges come in random
