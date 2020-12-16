@@ -40,7 +40,7 @@ public class TestGraph {
 				System.out.print("(" + edge.origin() + "," + edge.destination() + "," + ((edge.color().equals(Color.RED)) ? "RED" : "BLUE" )+") ");
 		System.out.println();
 
-		/*
+
 		System.out.println("\nEdges enumeration:");
 		for ( EdgeITF edge :  G.edges() )
 			System.out.print("(" + edge.origin() + "," + edge.destination() + "," + ((edge.color().equals(Color.RED)) ? "RED" : "BLUE" )+") ");
@@ -57,8 +57,9 @@ public class TestGraph {
 		System.out.println("\nIncidents enumeration:");
 		for ( VertexITF vertex :  G.vertices() ) {
 			System.out.println("Incident edges of vertex " + vertex + ":");
+			System.out.println(G.outDegree(vertex));
 			for ( EdgeITF edge : G.incidents(vertex) )
-				System.out.println("   " + edge + ", origin = " + edge.origin() + ", destination = " + edge.destination());
+				System.out.println("   " + edge + ", origin = "+edge.origin()+", destination = " + edge.destination());
 			System.out.println();
 		}
 		
@@ -76,7 +77,7 @@ public class TestGraph {
 		for ( VertexITF vertex :  G.vertices() )
 			System.out.println("degree(" + vertex + ") = " + G.degree(vertex));
 		System.out.println();
-		*/
+
 	}
 
 	/**

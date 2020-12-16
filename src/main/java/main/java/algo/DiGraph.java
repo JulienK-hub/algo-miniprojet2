@@ -1,5 +1,6 @@
 package main.java.algo;
 
+
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -50,31 +51,21 @@ public class DiGraph extends AbstractGraph {
 
     @Override
     public boolean removeVertex(VertexITF v) {
-		/*
-		for(EdgeITF edg : this.incidents(v)){
-//			System.out.println("les edges sont de retours : "+ edg);
-//			System.out.println("vertex " + v);
-			edg.destination().setColor(edg.color());
-			/*
-			if(edg.destination() == v){
-				System.out.println("blelbelbelbelbe");
-				removeEdge(edg.origin(), v);
-			}
-
-		}
-		*/
-
-        //EdgeIterator edgeIterator = new EdgeIterator();
-        this.edges.forEach((v1, m2) -> {
-            m2.forEach((v2, edge) -> {
-				edge.destination().setColor(edge.color());
-				if(edge.destination().equals(v)){
-					System.out.println("entrer");
-					m2.put(v, null);
-				}
-				System.out.println("edge " + edge + " V1 -- > " + v1 + " V2 --> " + v2);
-            });
-        });
+        for (Iterator<Map<VertexITF, EdgeITF>> iter = edges.values().iterator(); iter.hasNext(); ) {
+            Map<VertexITF, EdgeITF> m2 = iter.next();
+            for (Iterator<EdgeITF> es = m2.values().iterator(); es.hasNext(); ) {
+                EdgeITF edge = es.next();
+                edge.destination().setColor(edge.color());
+                if (edge.destination().equals(v)) {
+                    es.remove();
+//                    for (Iterator<EdgeITF> iterv = incidents(v).iterator(); iterv.hasNext(); ) {
+//                        EdgeITF eit = iterv.next();
+//                        adjacencyList.remove(eit)
+//                    }
+                }
+            }
+        }
+        inDegree.remove(v);
 
         edges.remove(v);
         vertices().remove(v);
@@ -87,7 +78,6 @@ public class DiGraph extends AbstractGraph {
         adjacencyList.get(u).remove(v);
         return false;
     }
-
 
     @Override
     public int degree(VertexITF u) {

@@ -1,5 +1,6 @@
 package main.java.algo;
 
+
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -201,7 +202,7 @@ public abstract class AbstractGraph implements GraphITF {
 		adjacencyList.get(u).add(v);
 		return true;
 	}
-	
+
 	protected boolean remove(VertexITF u, VertexITF v) {
 		if ( adjacencyList.get(u).contains(v) )
 			return false;
@@ -325,11 +326,7 @@ public abstract class AbstractGraph implements GraphITF {
 			return "(" + x + ", " + y + ")";
 		}
 
-		@Override
-		public boolean equals(Object o) {
-			InnerEdge e = (InnerEdge) o;
-			return x == e.x && y == e.y;
-		}
+
 	}
 	
 	// an inner class to build iterators over all edges
@@ -385,7 +382,7 @@ public abstract class AbstractGraph implements GraphITF {
 		}
 
 		public void remove() {
-			throw new UnsupportedOperationException(); 
-		}		
+			throw new UnsupportedOperationException();
+		}
 	}
 }

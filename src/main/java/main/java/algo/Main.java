@@ -11,9 +11,15 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
+        DiGraph d = GraphReader.diGraph(GraphReader.autoGraphComplet(10, 0.5, 0.5, 0.5, 0.5));
+
         Graph graph = new SingleGraph("Tutorial 1");
         GraphITF g = GraphReader.D1Rem4;
+
         System.out.println("input du graph --> " + GraphReader.input);
+
+
+
         List<EdgeITF> es = new ArrayList<>();
         List<VertexITF> remains = new ArrayList<>((Collection<? extends VertexITF>) g.vertices());
 
