@@ -1,68 +1,54 @@
 package algo;
-
 import java.awt.Color;
-
+import java.util.ArrayList;
 public class Vertex {
 	private int num;
 	private Color color;
-	private Edge neighbourR;
-	private Edge neighbourL;
-	
-	public Vertex(int num, Color color, Edge neighbourR, Edge neighbourL ) {
-		this.num = num;
-		this.color = color;
-		this.neighbourR = neighbourR;
-		this.neighbourL = neighbourL;
+	private ArrayList<Edge> edges;
+	public Vertex(int i, double p) {
+		edges = new ArrayList<Edge>();
+		this.num = i;
+		double rd = Math.random();
+		if(p <= rd) {
+			this.color = Color.RED;
+		}
+		else {
+			this.color = Color.BLUE;
+		}
 	}
-	
-	public Vertex(int num, Color color) {
-		this.num = num;
-		this.color = color;
-		this.neighbourR = null;
-		this.neighbourL = null;
+	public void addEdge(Edge e) {
+		edges.add(e);
 	}
-	
-	public Vertex() {
-		this.neighbourL = null;
-		this.neighbourR = null;
-		this.color = null;
-		this.num = 0;
+	public void supprEdges() {
+		for (Edge e : edges) {
+			e.applyColor();
+			e.getVertexPointed().supprEdgeWithOneVertex(this);
+		}
 	}
-
+	private void supprEdgeWithOneVertex(Vertex vertex) {
+		for (Edge e : edges) {
+			if(e.getVertexPointed()== vertex) {
+				edges.remove(e);
+				break;
+			}
+		}
+	}
 	public int getNum() {
 		return num;
 	}
-
 	public Color getColor() {
 		return color;
 	}
-
-	public Edge getNeighbourR() {
-		return neighbourR;
-	}
-	public Edge getNeighbourL() {
-		return neighbourL;
-	}
-
 	public void setNum(int num) {
 		this.num = num;
 	}
-
 	public void setColor(Color color) {
 		this.color = color;
 	}
-
-	public void setNeighbourR(Edge neighbourR) {
-		this.neighbourR = neighbourR;
-	}
-	public void setNeighbourL(Edge neighbourL) {
-		this.neighbourL = neighbourL;
-	}
-	
 	@Override
 	public String toString() {
 		String res = "";
-		if (num == 0) {
+		if (num == -1) {
 			return res += "   ";
 		}
 		if(color == Color.RED) {
@@ -77,51 +63,16 @@ public class Vertex {
 		res+= ConsoleColors.RESET;
 		return res;
 	}
-
-	public Vertex getVertexNeighbourL() {
-		if(neighbourL.getVertexExiting() == this) {
-			return neighbourL.getVertexPointed();
-		}
-		else {
-			return neighbourL.getVertexExiting();
-		}
-		
+	public ArrayList<Edge> getEdges() {
+		return edges;
 	}
-	
-	public Vertex getVertexNeighbourR() {
-		if(neighbourR.getVertexExiting() == this) {
-			return neighbourR.getVertexPointed();
-		}
-		else {
-			return neighbourR.getVertexExiting();
-		}
-		
-	}
-
-	public void supprEdgeR() {
-		if(neighbourR != null) {
-			if(neighbourR.getVertexPointed() == this) {
-				setColor(neighbourR.getColor());
-				neighbourR = null;
-			}
-			else {
-				neighbourR = null;
+	public int getNbBlueToRed() {
+		int res = 0;
+		for (Edge e : edges) {
+			if(e.getColor() == Color.RED && e.getVertexPointed().getColor() == Color.BLUE) {
+				res++;
 			}
 		}
-		
+		return res;
 	}
-	
-	public void supprEdgeL() {
-		if(neighbourL != null) {
-			if(neighbourL.getVertexPointed() == this) {
-				setColor(neighbourL.getColor());
-				neighbourL = null;
-			}
-			else {
-				neighbourL = null;
-			}
-		}
-		
-	}
-	
 }
