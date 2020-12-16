@@ -13,12 +13,12 @@ public class Graph {
 	public Graph(int vertexNumber, double p, double q) {
 		listVertex = new ArrayList<Vertex>();
 		listREDVertex = new ArrayList<Vertex>();
-		// création des vertex
+		// crÃ©ation des vertex
 		for (int i=0;i < vertexNumber; i++) {
 			Vertex v = new Vertex(i,p);
 			listVertex.add(v);
 		}
-		// création des arêtes
+		// crÃ©ation des arÃªtes
 		for (Vertex v: listVertex) {
 			for (Vertex u: listVertex) {
 				if (v.equals(u)) {
@@ -31,6 +31,34 @@ public class Graph {
 			}
 		}
 	}
+
+	public int heuristique2() {
+		int lowerRedToBlue = 0;
+		int currentRedToBlue;
+		int res = 0;
+		Vertex vertexToDelete = null;
+		getListREDVertex();
+		while (listREDVertex.size()>0) {
+			System.out.println(res);
+			System.out.println(this);
+			lowerRedToBlue = listVertex.size() ;
+			for (Vertex v : listREDVertex) {
+				currentRedToBlue = v.getNbRedToBlue();
+				if (currentRedToBlue < lowerRedToBlue) {
+					lowerRedToBlue = currentRedToBlue;
+					vertexToDelete = v;
+				}
+			}
+			if(vertexToDelete != null) {
+				suppr(vertexToDelete);
+			}
+			getListREDVertex();
+			res++;
+		}
+		System.out.println(this);
+		return res;
+	}
+
 	public int heuristique1() {
 		int moreBlueToRed = 0;
 		int currentBlueToRed;

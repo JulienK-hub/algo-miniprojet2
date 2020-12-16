@@ -75,4 +75,14 @@ public class Vertex {
 		}
 		return res;
 	}
+
+	public int getNbRedToBlue() {
+		int res = 0;
+		for (Edge e : edges) {
+			if(e.getColor() == Color.BLUE && e.getVertexPointed().getColor() == Color.RED) {
+				res++;
+			}
+		}
+		return res;
+	}
 }
