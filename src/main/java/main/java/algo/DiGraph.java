@@ -58,15 +58,13 @@ public class DiGraph extends AbstractGraph {
                 edge.destination().setColor(edge.color());
                 if (edge.destination().equals(v)) {
                     es.remove();
-//                    for (Iterator<EdgeITF> iterv = incidents(v).iterator(); iterv.hasNext(); ) {
-//                        EdgeITF eit = iterv.next();
-//                        adjacencyList.remove(eit)
-//                    }
+                    for (Iterator<Map.Entry<VertexITF, List<VertexITF>>> adr = adjacencyList.entrySet().iterator(); adr.hasNext(); ){
+                        Map.Entry<VertexITF, List<VertexITF>> cur = adr.next();
+                        cur.getValue().removeIf(vert -> vert.equals(v));
+                    }
                 }
             }
         }
-        inDegree.remove(v);
-
         edges.remove(v);
         vertices().remove(v);
         return true;
