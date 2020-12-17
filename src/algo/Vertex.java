@@ -76,7 +76,7 @@ public class Vertex {
 		return edges;
 	}
 
-	//retourne le nombre de vertex bleu qui pointe vers des vertex rouge
+	//retourne le nombre de vertex rouge qui ont des aretes bleu qui créer des changement **Blue To Red** a d'autre vertex
 	public int getNbBlueToRed() {
 		int res = 0;
 		for (Edge e : edges) {
@@ -87,7 +87,7 @@ public class Vertex {
 		return res;
 	}
 
-	//retourne le nombre de vertex rouge qui pointe vers des vertex bleu
+	//retourne le nombre de vertex rouge qui ont des aretes bleu qui créer des changement **Red To Blue** a d'autre vertex
 	public int getNbRedToBlue() {
 		int res = 0;
 		for (Edge e : edges) {
@@ -95,6 +95,20 @@ public class Vertex {
 				res++;
 			}
 		}
+		return res;
+	}
+
+	//retourne le nombre de vertex rouge qui pointe vers des vertex bleu
+	public int getNbRedToBlueAndMoreBlueToRed() {
+		int res = 0;
+		for (Edge e : edges) {
+			if(e.getColor() == Color.BLUE && e.getVertexPointed().getColor() == Color.RED ) { // dest en bleu
+				res--;
+			}else if(e.getColor() == Color.RED && e.getVertexPointed().getColor() == Color.BLUE){ // dest en rouge
+				res++;
+			}
+		}
+//		System.out.println(res);
 		return res;
 	}
 }

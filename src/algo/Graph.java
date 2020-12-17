@@ -95,6 +95,34 @@ public class Graph {
 		return res;
 	}
 
+	public int heuristique3(){
+		int lowerRedToBlueAndMoreBlueToRed;
+		int currentRedToBlueAndMoreBlueToRed;
+		int res = 0;
+		Vertex vertexToDelete = null;
+		getListREDVertex();
+		while (listREDVertex.size()>0) {
+//			System.out.println(res);
+//			System.out.println(this);
+			lowerRedToBlueAndMoreBlueToRed = listVertex.size() ;
+			for (Vertex v : listREDVertex) {
+				currentRedToBlueAndMoreBlueToRed = v.getNbRedToBlueAndMoreBlueToRed();
+				// On va actualiser la taille de changement de noeud rouges en noeuds bleus
+				if (currentRedToBlueAndMoreBlueToRed < lowerRedToBlueAndMoreBlueToRed) {
+					lowerRedToBlueAndMoreBlueToRed = currentRedToBlueAndMoreBlueToRed;
+					vertexToDelete = v;
+				}
+			}
+			if(vertexToDelete != null) {
+				suppr(vertexToDelete);
+			}
+			getListREDVertex();
+			res++;
+		}
+//		System.out.println(this);
+		return res;
+	}
+
 	public void suppr(int num) {
 		for (Vertex v: listVertex) {
 			if (v.getNum() == num){

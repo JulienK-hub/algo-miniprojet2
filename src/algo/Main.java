@@ -6,10 +6,6 @@ import java.util.ArrayList;
 public class Main {
 
 	public static void main(String[] args) {
-//
-//		Graph g = new Graph(100, 0.1, 0.9);
-//
-//		System.out.println(g.heuristique2());
 
 		int moyenne = 0;
 		Graph g;
@@ -19,7 +15,7 @@ public class Main {
 				moyenne = 0;
 				for (int i = 0; i < 100; i++) {
 					g = new Graph(100,p,q);
-					moyenne+=g.heuristique1();
+					moyenne+=g.heuristique3();
 				}
 				System.out.print(" | q="+q+" " + moyenne/100);
 			}
