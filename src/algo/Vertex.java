@@ -9,7 +9,7 @@ public class Vertex {
 		edges = new ArrayList<Edge>();
 		this.num = i;
 		double rd = Math.random();
-		if(p <= rd) {
+		if(p > rd) {
 			this.color = Color.RED;
 		}
 		else {

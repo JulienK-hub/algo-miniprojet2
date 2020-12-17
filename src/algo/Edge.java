@@ -11,7 +11,7 @@ public class Edge {
 		this.vertexPointed = vertexPointed;
 		this.vertexExiting = vertexExiting;
 		double rd = Math.random();
-		if(rd <= q) {
+		if(rd < q) { //Si q = 0 -> aucune chance d'avoir un bleu
 			this.color = Color.BLUE;
 		}
 		else {

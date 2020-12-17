@@ -1,7 +1,6 @@
 package algo;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Graph {
 	private ArrayList<Vertex> listVertex;
@@ -39,8 +38,8 @@ public class Graph {
 		Vertex vertexToDelete = null;
 		getListREDVertex();
 		while (listREDVertex.size()>0) {
-			System.out.println(res);
-			System.out.println(this);
+//			System.out.println(res);
+//			System.out.println(this);
 			lowerRedToBlue = listVertex.size() ;
 			for (Vertex v : listREDVertex) {
 				currentRedToBlue = v.getNbRedToBlue();
@@ -55,7 +54,7 @@ public class Graph {
 			getListREDVertex();
 			res++;
 		}
-		System.out.println(this);
+//		System.out.println(this);
 		return res;
 	}
 
@@ -66,8 +65,8 @@ public class Graph {
 		Vertex vertexToDelete = null;
 		getListREDVertex();
 		while (listREDVertex.size()>0) {
-			System.out.println(res);
-			System.out.println(this);
+//			System.out.println(res);
+//			System.out.println(this);
 			moreBlueToRed = -1 ;
 			for (Vertex v : listREDVertex) {
 				currentBlueToRed = v.getNbBlueToRed();
@@ -82,7 +81,7 @@ public class Graph {
 			getListREDVertex();
 			res++;
 		}
-		System.out.println(this);
+//		System.out.println(this);
 		return res;
 	}
 	public void suppr(int num) {
