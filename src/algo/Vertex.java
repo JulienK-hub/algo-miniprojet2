@@ -5,6 +5,13 @@ public class Vertex {
 	private int num;
 	private Color color;
 	private ArrayList<Edge> edges;
+
+
+	/**
+	 * 	creation d'un vertex avec une probabilité p qu'il soit rouge
+	 * @param i
+	 * @param p : probabilité sommet rouge
+	 */
 	public Vertex(int i, double p) {
 		edges = new ArrayList<Edge>();
 		this.num = i;
@@ -25,6 +32,8 @@ public class Vertex {
 			e.getVertexPointed().supprEdgeWithOneVertex(this);
 		}
 	}
+
+	//supprime le(s) arrête(s) qui pointe(nt) vers un vertex donné
 	private void supprEdgeWithOneVertex(Vertex vertex) {
 		for (Edge e : edges) {
 			if(e.getVertexPointed()== vertex) {
@@ -66,6 +75,8 @@ public class Vertex {
 	public ArrayList<Edge> getEdges() {
 		return edges;
 	}
+
+	//retourne le nombre de vertex bleu qui pointe vers des vertex rouge
 	public int getNbBlueToRed() {
 		int res = 0;
 		for (Edge e : edges) {
@@ -76,6 +87,7 @@ public class Vertex {
 		return res;
 	}
 
+	//retourne le nombre de vertex rouge qui pointe vers des vertex bleu
 	public int getNbRedToBlue() {
 		int res = 0;
 		for (Edge e : edges) {

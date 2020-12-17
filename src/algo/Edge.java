@@ -6,12 +6,18 @@ public class Edge {
 	private Vertex vertexPointed;
 	private Vertex vertexExiting;
 	private Color color;
-	
+
+	/**
+	 * Création d'une arrête d'un vertex d'origine à un une vertex destination avec une probabilité q d'arrête de couleur bleu
+	 * @param vertexExiting
+	 * @param vertexPointed
+	 * @param q
+	 */
 	public Edge(Vertex vertexExiting, Vertex vertexPointed, double q) {
 		this.vertexPointed = vertexPointed;
 		this.vertexExiting = vertexExiting;
 		double rd = Math.random();
-		if(rd < q) { //Si q = 0 -> aucune chance d'avoir un bleu
+		if(rd < q) {
 			this.color = Color.BLUE;
 		}
 		else {
