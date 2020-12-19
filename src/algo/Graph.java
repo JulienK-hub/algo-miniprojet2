@@ -32,13 +32,14 @@ public class Graph {
 	}
 
 	/**
-	 * Heuristique 1 qui va tester la suppression de chacun des vertex, et ensuite supprimer les noeuds qui changent le + de noeud bleus en noeuds rouges
+	 * Heuristique 1 qui va tester la suppression de chacun des noeuds, et ensuite supprimer les noeuds qui changent le + de noeuds bleus en noeuds rouges
+	 *
 	 * @return la taille de la sequence rouge
 	 */
 	public int heuristique1() {
-		int moreBlueToRed = 0; // Valeur de la plus haute de changement de Blue to Red apres suppression du vertex (utilisé pour comparaison entre autres)
-		int currentBlueToRed; // Valeur de l'itération actuelle qui (simule et ) compte le nombre de changement de Blue to Red apres suppression du vertex itéré
-		int res = 0; // La taille de la séquence final de suppression de vertex
+		int moreBlueToRed = 0; // La valeur la plus haute de changement de Blue to Red apres suppression du noeud (utilisé pour comparaison avec les autres)
+		int currentBlueToRed; // Valeur de l'itération actuelle qui (simule et ) compte le nombre de changement de Blue to Red apres suppression du noeud itéré
+		int res = 0; // La taille de la séquence finale de suppression de noeud
 		Vertex vertexToDelete = null;
 		getListREDVertex();
 		while (listREDVertex.size()>0) {
@@ -47,7 +48,7 @@ public class Graph {
 			moreBlueToRed = -1 ;
 			for (Vertex v : listREDVertex) {
 				currentBlueToRed = v.getNbBlueToRed();
-				//On va actualiser la taille de changement de noeud bleus en noeuds rouges
+				//On va actualiser la taille de changement de noeuds bleus en noeuds rouges
 				if (currentBlueToRed > moreBlueToRed) {
 					moreBlueToRed = currentBlueToRed;
 					vertexToDelete = v;
@@ -64,7 +65,7 @@ public class Graph {
 	}
 
 	/**
-	 * Heuristique pour tester la suppression de chacun des vertex, et d’ensuite supprimer le vertex qui change le moins de voisins de Rouge à Bleu
+	 * Heuristique pour tester la suppression de chacun des noeuds, et d’ensuite supprimer le noeud qui change le moins de voisins de Rouge à Bleu
 	 * @return la taille de la sequence rouge
 	 */
 	public int heuristique2() {
