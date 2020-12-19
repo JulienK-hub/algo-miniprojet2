@@ -6,11 +6,23 @@ public class Edge {
 	private Vertex vertexPointed;
 	private Vertex vertexExiting;
 	private Color color;
-	
-	public Edge(Vertex vertexExiting, Vertex vertexPointed, Color color) {
+
+	/**
+	 * Création d'une arrête d'un vertex d'origine à un une vertex destination avec une probabilité q d'arrête de couleur bleu
+	 * @param vertexExiting
+	 * @param vertexPointed
+	 * @param q
+	 */
+	public Edge(Vertex vertexExiting, Vertex vertexPointed, double q) {
 		this.vertexPointed = vertexPointed;
-		this.color = color;
 		this.vertexExiting = vertexExiting;
+		double rd = Math.random();
+		if(rd < q) {
+			this.color = Color.BLUE;
+		}
+		else {
+			this.color = Color.RED;
+		}
 	}
 
 	public Vertex getVertexPointed() {
@@ -53,5 +65,21 @@ public class Edge {
 		}
 		res += ConsoleColors.RESET;
 		return res;
+	}
+	@Override
+	public String toString() {
+		String res = "";
+		if (color == Color.BLUE) {
+			res += ConsoleColors.BLUE;
+		}
+		else if (color == Color.RED) {
+			res += ConsoleColors.RED;
+		}
+		res += "-> " + ConsoleColors.RESET + vertexPointed.toString();
+		return res;
+	}
+
+	public void applyColor() {
+		vertexPointed.setColor(color);
 	}
 }
